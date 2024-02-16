@@ -2,9 +2,21 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Question {
+  id: Int!
+  quizId: Int!
+  title: String!
+  type: String!
+  possibleAnswers: [String!]
+  correctAnswer: String!
+  description: String!
+  quiz: Quiz!
+}
+
 type Quiz {
   id: Int!
   name: String!
+  questions: [Question!]!
 }
 
 type UserAnswer {
@@ -14,9 +26,22 @@ type UserAnswer {
 }
 
 type Query {
-  getQuizQuestions(id: Int!): Quiz!
+  getQuizQuestions(id: Int!): Quiz
 }
 
 type Mutation {
-  createQuiz: Quiz!
+  createQuiz(createQuizData: CreateQuizInput!): Quiz!
+}
+
+input CreateQuizInput {
+  name: String!
+  questions: [CreateQuestionInput!]!
+}
+
+input CreateQuestionInput {
+  title: String!
+  type: String!
+  description: String!
+  possibleAnswers: [String!]!
+  correctAnswer: String!
 }
