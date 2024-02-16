@@ -33,7 +33,6 @@ export class Question{
     @Column()
     description: string;
 
-    @Field((type) => Quiz)
-    @ManyToOne(() => Quiz,(quiz) => quiz.questions)
-    quiz: Quiz;
+    //@ManyToOne(() => Quiz,(quiz) => quiz.questions)
+    //quiz: Quiz;
 }

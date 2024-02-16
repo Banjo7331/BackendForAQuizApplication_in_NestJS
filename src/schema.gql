@@ -10,7 +10,6 @@ type Question {
   possibleAnswers: [String!]
   correctAnswer: String!
   description: String!
-  quiz: Quiz!
 }
 
 type Quiz {

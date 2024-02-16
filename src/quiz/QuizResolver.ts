@@ -7,7 +7,7 @@ import { Question } from 'src/typeorm/entities/Question';
 
 @Resolver(() => Quiz)
 export class QuizResolver {
-    constructor(@Inject(QuizService) private quizService: QuizService){}
+    constructor(@Inject(QuizService) private quizService: QuizService,){}
     @Query((returns) => Quiz, {nullable: true})
     getQuizQuestions(@Args('id',{type: ()=> Int}) id: number) {
       return this.quizService.getQuizQuestions(id);
@@ -16,7 +16,7 @@ export class QuizResolver {
 
     @Mutation((returns) => Quiz)
     createQuiz(@Args('createQuizData') createQuizData: CreateQuizInput): Promise<Quiz> {
-    return this.quizService.createQuiz(createQuizData);
-  }
+      return this.quizService.createQuiz(createQuizData);
+    }
 
 }

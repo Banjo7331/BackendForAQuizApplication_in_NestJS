@@ -14,6 +14,6 @@ export class Quiz{
     name: string;
 
     @Field(() => [Question])
-    @OneToMany(() => Question,(question)=> question.quiz)
+    //@OneToMany(() => Question,(question)=> question.quiz)
     questions: Question[];
 }
