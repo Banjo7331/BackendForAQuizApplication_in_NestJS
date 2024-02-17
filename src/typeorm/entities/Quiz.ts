@@ -13,7 +13,7 @@ export class Quiz{
     @Field()
     name: string;
 
-    @Field(() => [Question])
+    @Field((type) => [Question])
     //@OneToMany(() => Question,(question)=> question.quiz)
     questions: Question[];
 }

@@ -30,6 +30,7 @@ type Query {
 
 type Mutation {
   createQuiz(createQuizData: CreateQuizInput!): Quiz!
+  submitAnswers(createQuizAttemptData: CreateQuizAttemptInput!): Int!
 }
 
 input CreateQuizInput {
@@ -43,4 +44,17 @@ input CreateQuestionInput {
   description: String!
   possibleAnswers: [String!]!
   correctAnswer: String!
+}
+
+input CreateQuizAttemptInput {
+  quizId: Int!
+  maxPoints: Int!
+  obtainedPoints: Int!
+  userAnswers: [CreateUserAttemptInput!]!
+}
+
+input CreateUserAttemptInput {
+  questionId: Int!
+  answer: String!
+  quizAttempt: CreateQuizAttemptInput!
 }

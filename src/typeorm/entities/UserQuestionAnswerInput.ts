@@ -17,7 +17,7 @@ export class UserAnswer{
     @Column()
     @Field()
     answer?: string;
-
+    
     @ManyToOne(() => QuizAttempt,(quizAttempt) => quizAttempt.userAnswers)
     quizAttempt: QuizAttempt;
 }

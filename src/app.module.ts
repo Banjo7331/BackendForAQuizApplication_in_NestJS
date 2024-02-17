@@ -7,6 +7,7 @@ import { Quiz } from './typeorm/entities/Quiz';
 import { QuizAttempt } from './typeorm/entities/QuizAttempt';
 import { Question } from './typeorm/entities/Question';
 import { UserAnswer } from './typeorm/entities/UserQuestionAnswerInput';
+import { QuizAttemptModule } from './quizAttempt/quizAttempt.module';
 
 @Module({
   imports: [GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -24,7 +25,8 @@ import { UserAnswer } from './typeorm/entities/UserQuestionAnswerInput';
     entities: [Quiz,QuizAttempt,Question,UserAnswer],
     synchronize: true,
   }),
-  QuizModule],
+  QuizModule,
+  QuizAttemptModule],
   controllers: [],
   providers: [],
 })
