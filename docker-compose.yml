@@ -1,0 +1,22 @@
+services:
+  nestjs_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+    volumes:
+      - ./src:/usr/src/app/src
+  postgres_db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_ROOT_PASSWORD=root_password_123
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testuser123
+      - POSTGRES_DB=post_db
+      - POSTGRES_TCP_PORT=5432

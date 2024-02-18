@@ -17,7 +17,7 @@ import { QuizAttemptModule } from './quizAttempt/quizAttempt.module';
   }),
   TypeOrmModule.forRoot({
     type: 'postgres',
-    host: 'localhost',
+    host: 'postgres_db',
     port: 5432,
     username: 'testuser',
     password: 'testuser123',
