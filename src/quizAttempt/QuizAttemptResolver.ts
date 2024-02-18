@@ -5,11 +5,11 @@ import { QuizAttemptService } from './quizAttempt.service';
 import { CreateQuizAttemptInput } from './utils/CreateQuestionAttemptInput';
 import { QuizAttempt } from 'src/typeorm/entities/QuizAttempt';
 
-@Resolver(() => Quiz)
+@Resolver(() => QuizAttempt)
 export class QuizAttemptResolver {
     constructor(@Inject(QuizAttemptService) private quizAttemptService: QuizAttemptService,){}
     
-    @Mutation(() => Int)
+    @Mutation((returns) => QuizAttempt)
     submitAnswers(@Args('createQuizAttemptData') createQuizAttemptData: CreateQuizAttemptInput){
         return this.quizAttemptService.submitAnswers(createQuizAttemptData);
     } 

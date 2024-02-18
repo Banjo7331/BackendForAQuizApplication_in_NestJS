@@ -15,6 +15,10 @@ export class UserAnswer{
     questionId: number;
 
     @Column()
+    @Field((type) => Int)
+    quizAttemptId: number;
+
+    @Column()
     @Field()
     answer?: string;
     

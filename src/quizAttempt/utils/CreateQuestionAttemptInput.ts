@@ -6,12 +6,6 @@ export class CreateQuizAttemptInput {
   @Field((type) => Int)
   quizId: number;
 
-  @Field((type) => Int)
-  maxPoints: number;
-
-  @Field((type) => Int)
-  obtainedPoints: number;
-
   @Field(() => [CreateUserAttemptInput]) 
   userAnswers: CreateUserAttemptInput[];
 }

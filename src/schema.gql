@@ -21,7 +21,16 @@ type Quiz {
 type UserAnswer {
   id: Int!
   questionId: Int!
+  quizAttemptId: Int!
   answer: String!
+}
+
+type QuizAttempt {
+  id: Int!
+  quizId: Int!
+  maxPoints: Int!
+  obtainedPoints: Int!
+  userAnswers: [UserAnswer!]
 }
 
 type Query {
@@ -30,7 +39,7 @@ type Query {
 
 type Mutation {
   createQuiz(createQuizData: CreateQuizInput!): Quiz!
-  submitAnswers(createQuizAttemptData: CreateQuizAttemptInput!): Int!
+  submitAnswers(createQuizAttemptData: CreateQuizAttemptInput!): QuizAttempt!
 }
 
 input CreateQuizInput {
@@ -48,13 +57,9 @@ input CreateQuestionInput {
 
 input CreateQuizAttemptInput {
   quizId: Int!
-  maxPoints: Int!
-  obtainedPoints: Int!
   userAnswers: [CreateUserAttemptInput!]!
 }
 
 input CreateUserAttemptInput {
-  questionId: Int!
   answer: String!
-  quizAttempt: CreateQuizAttemptInput!
 }

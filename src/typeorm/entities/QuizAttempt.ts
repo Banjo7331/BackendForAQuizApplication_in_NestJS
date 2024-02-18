@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserAnswer } from "./UserQuestionAnswerInput";
 
 @Entity({name: 'quiz_attempt'})
@@ -21,7 +21,7 @@ export class QuizAttempt {
   @Field((type) => Int)
   obtainedPoints: number;
 
-  //@OneToMany(() => UserAnswer, (userAnswer) => userAnswer.quizAttempt)
+  @OneToMany(() => UserAnswer, (userAnswer) => userAnswer.quizAttempt)
   @Field(() => [UserAnswer], { nullable: true }) 
   userAnswers?: UserAnswer[];
 }
