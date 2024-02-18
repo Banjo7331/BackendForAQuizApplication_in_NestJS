@@ -11,8 +11,8 @@ export class CreateQuestionInput {
   @Field()
   description: string;
 
-  @Field(() => [String])
-  possibleAnswers: string[];
+  @Field(() => [String], { nullable: true })
+  possibleAnswers?: string[];
 
   @Field()
   correctAnswer: string;

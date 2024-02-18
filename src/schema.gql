@@ -51,7 +51,7 @@ input CreateQuestionInput {
   title: String!
   type: String!
   description: String!
-  possibleAnswers: [String!]!
+  possibleAnswers: [String!]
   correctAnswer: String!
 }
 
