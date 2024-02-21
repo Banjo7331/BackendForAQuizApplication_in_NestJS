@@ -15,13 +15,12 @@ export class QuizService {
         
     }
     async getQuizQuestions(id: number) {
-      const quiz = await this.quizRepository.findOneBy({id});
+      const quiz = await this.quizRepository.findOne({ where: { id }, relations: ['questions'] });
       if (!quiz) {
         throw new Error(`Quiz with ID ${id} not found`);
       }
   
-      quiz.questions = await this.questionRepository.find({ where: { quizId: id } });
-      return quiz;
+      return quiz.questions;
     }
     async createQuiz(createQuizData: CreateQuizInput): Promise<Quiz> {
       const { name, questions } = createQuizData;
@@ -35,15 +34,13 @@ export class QuizService {
         const questionEntities = questions.map((questionData) => {
           return this.questionRepository.create({
             ...questionData,
-            quizId: createdQuiz.id, 
+            quiz: createdQuiz,
           });
         });
     
         await this.questionRepository.save(questionEntities);
-    
-        createdQuiz.questions = await this.questionRepository.find({
-          where: { quizId: createdQuiz.id }, 
-        });
+
+        createdQuiz.questions = questionEntities;
       }
     
       return createdQuiz;

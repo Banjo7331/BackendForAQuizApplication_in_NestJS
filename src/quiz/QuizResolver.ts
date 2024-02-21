@@ -8,7 +8,7 @@ import { Question } from 'src/typeorm/entities/Question';
 @Resolver(() => Quiz)
 export class QuizResolver {
     constructor(@Inject(QuizService) private quizService: QuizService,){}
-    @Query((returns) => Quiz, {nullable: true})
+    @Query((returns) => [Question], {nullable: true})
     getQuizQuestions(@Args('id',{type: ()=> Int}) id: number) {
       return this.quizService.getQuizQuestions(id);
   

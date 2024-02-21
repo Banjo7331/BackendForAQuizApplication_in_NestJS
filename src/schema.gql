@@ -4,7 +4,6 @@
 
 type Question {
   id: Int!
-  quizId: Int!
   title: String!
   type: String!
   possibleAnswers: [String!]
@@ -20,21 +19,19 @@ type Quiz {
 
 type UserAnswer {
   id: Int!
-  questionId: Int!
   quizAttemptId: Int!
   answer: String!
 }
 
 type QuizAttempt {
   id: Int!
-  quizId: Int!
   maxPoints: Int!
   obtainedPoints: Int!
   userAnswers: [UserAnswer!]
 }
 
 type Query {
-  getQuizQuestions(id: Int!): Quiz
+  getQuizQuestions(id: Int!): [Question!]
 }
 
 type Mutation {

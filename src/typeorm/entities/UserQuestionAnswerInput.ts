@@ -3,25 +3,25 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn
 import { Question } from "./Question";
 import { QuizAttempt } from "./QuizAttempt";
 
-@Entity({name: 'user_input'})
+@Entity({ name: 'user_input' })
 @ObjectType()
-export class UserAnswer{
-    @PrimaryGeneratedColumn()
-    @Field((type) => Int)
-    id: number;
-    @OneToOne(()=> Question)
-    @Column()
-    @Field((type) => Int)
-    questionId: number;
+export class UserAnswer {
+  @PrimaryGeneratedColumn()
+  @Field((type) => Int)
+  id: number;
 
-    @Column()
-    @Field((type) => Int)
-    quizAttemptId: number;
+  @ManyToOne(() => Question)
+  @JoinColumn({ name: 'questionId' })
+  question: Question; 
 
-    @Column()
-    @Field()
-    answer?: string;
-    
-    @ManyToOne(() => QuizAttempt,(quizAttempt) => quizAttempt.userAnswers)
-    quizAttempt: QuizAttempt;
+  @Column()
+  @Field((type) => Int)
+  quizAttemptId: number;
+
+  @Column()
+  @Field()
+  answer?: string;
+
+  @ManyToOne(() => QuizAttempt, (quizAttempt) => quizAttempt.userAnswers)
+  quizAttempt: QuizAttempt;
 }

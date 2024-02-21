@@ -20,16 +20,16 @@ export class QuizAttemptService {
     const { quizId, userAnswers } = createQuizAttemptData;
     
     const id = quizId;
-    const quiz = await this.quizRepository.findOneBy({id});
+    const quiz = await this.quizRepository.findOne({ where: { id }, relations: ['questions'] });
     if (!quiz) {
         throw new Error(`Quiz with ID ${quizId} not found`);
     }
-    const questions = await this.questionRepository.find({ where: { quizId: quizId } });
+    const questions = quiz.questions;
+    console.log('questions:', questions);
 
     const quizAttempt = new QuizAttempt();
-    quizAttempt.quizId = quizId;
+    quizAttempt.quiz = quiz;
     quizAttempt.maxPoints = questions.length;
-    
 
     quizAttempt.obtainedPoints = userAnswers.reduce((points, userAnswer, index) => {
       const question = questions[index];
@@ -41,24 +41,21 @@ export class QuizAttemptService {
 
     const createdQuizAttempt = await this.quizAttemptRepository.save(quizAttempt);
 
-    const userAnswerEntities = userAnswers.map((userAnswer, index) => {
+    const userAnswerEntities = userAnswers.map((userAnswerInput, index) => {
       const userAnswerEntity = new UserAnswer();
-      userAnswerEntity.quizAttemptId = createdQuizAttempt.id;
+      userAnswerEntity.quizAttempt = createdQuizAttempt;
       const question = questions[index];
       if (question) {
-          userAnswerEntity.questionId = question.id;
+        userAnswerEntity.question = question;
       }
-      userAnswerEntity.answer = userAnswer.answer;
-      userAnswerEntity.quizAttempt = createdQuizAttempt;
+      userAnswerEntity.answer = userAnswerInput.answer;
+      console.log('userAnswerEntity:', userAnswerEntity);
       return userAnswerEntity;
     });
-    
-    
-    await this.userAnswerRepository.save(userAnswerEntities);
 
-    createdQuizAttempt.userAnswers = await this.userAnswerRepository.find({
-      where: { quizAttemptId: createdQuizAttempt.id }, 
-    });
+    await this.userAnswerRepository.save(userAnswerEntities);
+    createdQuizAttempt.userAnswers = userAnswerEntities;
+    console.log('full:', createdQuizAttempt);
     return createdQuizAttempt;
-  }
+  } 
 }

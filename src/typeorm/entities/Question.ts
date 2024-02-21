@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Quiz } from "./Quiz";
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 
@@ -8,10 +8,6 @@ export class Question{
     @Field((type) => Int)
     @PrimaryGeneratedColumn()
     id: number;
-
-    @Field((type) => Int)
-    @PrimaryColumn()
-    quizId: number; 
     
     @Field()
     @Column()
@@ -33,6 +29,10 @@ export class Question{
     @Column()
     description: string;
 
-    //@ManyToOne(() => Quiz,(quiz) => quiz.questions)
-    //quiz: Quiz;
+    @ManyToOne(() => Quiz, (quiz) => quiz.questions)
+    @JoinColumn({ name: 'quizId' })
+    quiz: Quiz;
+
+   // @Column({ nullable: true })  // Add this line to make quizId nullable
+   // quizId: number;
 }
