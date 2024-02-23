@@ -21,7 +21,7 @@ import { QuizAttemptModule } from './quizAttempt/quizAttempt.module';
     port: 5432,
     username: 'testuser',
     password: 'testuser123',
-    database: 'post_db_new',
+    database: 'post_new_structure',
     entities: [Quiz,QuizAttempt,UserAnswer,Question],
     synchronize: true,
   }),

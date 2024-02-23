@@ -5,7 +5,6 @@ import { Type } from "class-transformer";
 
 @InputType()
 export class CreateQuizAttemptInput {
-  @IsNumberString()
   @Min(1, { message: 'Quiz ID must be greater than or equal to 1.' })
   @Field((type) => Int)
   quizId: number;

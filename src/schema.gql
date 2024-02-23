@@ -7,7 +7,7 @@ type Question {
   title: String!
   type: String!
   possibleAnswers: [String!]
-  correctAnswer: String!
+  correctAnswer: [String!]!
   description: String!
 }
 
@@ -20,7 +20,7 @@ type Quiz {
 type UserAnswer {
   id: Int!
   quizAttemptId: Int!
-  answer: String!
+  answer: [String!]!
 }
 
 type QuizAttempt {
@@ -49,7 +49,7 @@ input CreateQuestionInput {
   type: String!
   description: String!
   possibleAnswers: [String!]
-  correctAnswer: String!
+  correctAnswer: [String!]!
 }
 
 input CreateQuizAttemptInput {
@@ -58,5 +58,5 @@ input CreateQuizAttemptInput {
 }
 
 input CreateUserAttemptInput {
-  answer: String!
+  answer: [String!]!
 }

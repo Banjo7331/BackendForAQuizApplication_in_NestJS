@@ -4,7 +4,9 @@ import { QuizService } from './quiz.service';
 import { Inject, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateQuizInput } from './utils/CreateQuizInput';
 import { Question } from 'src/typeorm/entities/Question';
-import { QuestionTypeValidationPipe } from 'src/pipes/question-type-validation.pipe';
+import { QuestionTypeValidationPipe } from 'src/quiz/pipes/question-type-validation.pipe';
+import { SingleChoiceValidationPipe } from 'src/quiz/pipes/single-choice-question.pipe';
+import { MultipleChoiceValidationPipe } from 'src/quiz/pipes/multiple-choice-question.pipe';
 
 @Resolver(() => Quiz)
 export class QuizResolver {
@@ -16,7 +18,7 @@ export class QuizResolver {
     }
 
     @Mutation((returns) => Quiz)
-    @UsePipes(new ValidationPipe(),new QuestionTypeValidationPipe())
+    @UsePipes(new ValidationPipe(),new QuestionTypeValidationPipe(),new SingleChoiceValidationPipe(), new MultipleChoiceValidationPipe())
     createQuiz(@Args('createQuizData') createQuizData: CreateQuizInput): Promise<Quiz> {
       return this.quizService.createQuiz(createQuizData);
     }

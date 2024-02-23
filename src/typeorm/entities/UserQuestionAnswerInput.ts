@@ -18,9 +18,9 @@ export class UserAnswer {
   @Field((type) => Int)
   quizAttemptId: number;
 
-  @Column()
-  @Field()
-  answer?: string;
+  @Column('jsonb')
+  @Field((type) => [String])
+  answer: string[];
 
   @ManyToOne(() => QuizAttempt, (quizAttempt) => quizAttempt.userAnswers)
   quizAttempt: QuizAttempt;

@@ -21,9 +21,9 @@ export class Question{
     @Column('jsonb', { nullable: true })
     possibleAnswers?: string[];
 
-    @Field()
-    @Column() 
-    correctAnswer: string;
+    @Field((type) => [String])
+    @Column('jsonb')
+    correctAnswer: string[];
 
     @Field()
     @Column()
@@ -33,6 +33,4 @@ export class Question{
     @JoinColumn({ name: 'quizId' })
     quiz: Quiz;
 
-   // @Column({ nullable: true })  // Add this line to make quizId nullable
-   // quizId: number;
 }

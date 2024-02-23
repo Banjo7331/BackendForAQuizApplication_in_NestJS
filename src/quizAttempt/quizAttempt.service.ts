@@ -33,9 +33,18 @@ export class QuizAttemptService {
 
     quizAttempt.obtainedPoints = userAnswers.reduce((points, userAnswer, index) => {
       const question = questions[index];
-      if (question && question.correctAnswer === userAnswer.answer) {
-          return points + 1;
+      if (question) {
+        if (question.correctAnswer.length === userAnswer.answer.length) {
+          const allCorrect = question.correctAnswer.every((correctAnswer) =>
+            userAnswer.answer.includes(correctAnswer)
+          );
+    
+          if (allCorrect) {
+            return points + 1;
+          }
+        }
       }
+    
       return points;
     }, 0);
 
