@@ -6,6 +6,7 @@ import { Repository } from "typeorm";
 import { CreateQuizAttemptInput } from "./utils/CreateQuestionAttemptInput";
 import { Quiz } from "src/typeorm/entities/Quiz";
 import { Question } from "src/typeorm/entities/Question";
+import { QuestionType } from "src/enums/question-type.enum";
 
 @Injectable()
 export class QuizAttemptService {
@@ -35,7 +36,9 @@ export class QuizAttemptService {
       const question = questions[index];
       if (question) {
         if (question.correctAnswer.length === userAnswer.answer.length) {
-          const allCorrect = question.correctAnswer.every((correctAnswer) =>
+          const allCorrect = question.type == QuestionType.SORT ? 
+          question.correctAnswer.length === userAnswer.answer.length && question.correctAnswer.every((correctAnswer, index) => correctAnswer === userAnswer.answer[index]) : 
+          question.correctAnswer.every((correctAnswer) =>
             userAnswer.answer.includes(correctAnswer)
           );
     

@@ -11,7 +11,7 @@ export class SingleChoiceValidationPipe implements PipeTransform<any> {
       if (questions && Array.isArray(questions)) {
         
         const invalidQuestions = questions.filter((question) => {
-            if (!question.possibleAnswers) {
+            if (!question.possibleAnswers && question.type === QuestionType.ONE_CHOICE) {
               throw new BadRequestException('Possible answers must be defined for single-choice questions.');
             }
             return (
