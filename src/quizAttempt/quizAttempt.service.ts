@@ -37,7 +37,7 @@ export class QuizAttemptService {
       if (question) {
         if (question.correctAnswer.length === userAnswer.answer.length) {
           const allCorrect = question.type == QuestionType.SORT ? 
-          question.correctAnswer.length === userAnswer.answer.length && question.correctAnswer.every((correctAnswer, index) => correctAnswer === userAnswer.answer[index]) : 
+          question.correctAnswer.every((correctAnswer, index) => correctAnswer === userAnswer.answer[index]) : 
           question.correctAnswer.every((correctAnswer) =>
             userAnswer.answer.includes(correctAnswer)
           );
@@ -45,6 +45,8 @@ export class QuizAttemptService {
           if (allCorrect) {
             return points + 1;
           }
+        }else{
+          throw new Error(`Not correct number of answers`);
         }
       }
     
