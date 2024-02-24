@@ -7,6 +7,8 @@ import { CreateQuizAttemptInput } from "./utils/CreateQuestionAttemptInput";
 import { Quiz } from "src/typeorm/entities/Quiz";
 import { Question } from "src/typeorm/entities/Question";
 import { QuestionType } from "src/enums/question-type.enum";
+import { QuestionNotFoundException } from "src/exceptions/QuestionNotFound.exception";
+import { QuizNotFoundException } from "src/exceptions/QuizNotFound.exception";
 
 @Injectable()
 export class QuizAttemptService {
@@ -23,7 +25,7 @@ export class QuizAttemptService {
     const id = quizId;
     const quiz = await this.quizRepository.findOne({ where: { id }, relations: ['questions'] });
     if (!quiz) {
-        throw new Error(`Quiz with ID ${quizId} not found`);
+        throw new QuizNotFoundException();
     }
     const questions = quiz.questions;
     console.log('questions:', questions);
@@ -45,10 +47,8 @@ export class QuizAttemptService {
           if (allCorrect) {
             return points + 1;
           }
-        }else{
-          throw new Error(`Not correct number of answers`);
         }
-      }
+      }else throw new QuestionNotFoundException(index);
     
       return points;
     }, 0);
@@ -61,7 +61,8 @@ export class QuizAttemptService {
       const question = questions[index];
       if (question) {
         userAnswerEntity.question = question;
-      }
+      }else throw new QuestionNotFoundException(index);
+
       userAnswerEntity.answer = userAnswerInput.answer;
       console.log('userAnswerEntity:', userAnswerEntity);
       return userAnswerEntity;

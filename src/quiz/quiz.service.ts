@@ -4,6 +4,8 @@ import { Quiz } from "src/typeorm/entities/Quiz";
 import { Repository } from "typeorm";
 import { CreateQuizInput } from "./utils/CreateQuizInput";
 import { Question } from "src/typeorm/entities/Question";
+import { QuizNotFoundException } from "src/exceptions/QuizNotFound.exception";
+import { QuestionNotFoundException } from "src/exceptions/QuestionNotFound.exception";
 
 @Injectable()
 export class QuizService {
@@ -17,7 +19,7 @@ export class QuizService {
     async getQuizQuestions(id: number) {
       const quiz = await this.quizRepository.findOne({ where: { id }, relations: ['questions'] });
       if (!quiz) {
-        throw new Error(`Quiz with ID ${id} not found`);
+        throw new QuizNotFoundException();
       }
   
       return quiz.questions;
@@ -41,6 +43,8 @@ export class QuizService {
         await this.questionRepository.save(questionEntities);
 
         createdQuiz.questions = questionEntities;
+      }else{
+        throw new QuestionNotFoundException()
       }
     
       return createdQuiz;
