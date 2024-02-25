@@ -13,6 +13,7 @@ export class CreateQuestionInput {
   @IsNotEmpty({ message: 'Type cannot be empty.' })
   @Field()
   type: string;
+  
   @Length(5, 45, { message: `Description of Question must be between $constraint1 and $constraint2 characters.` })
   @IsString({ message: 'Description must be a string.' })
   @IsNotEmpty({ message: 'Description cannot be empty.' })

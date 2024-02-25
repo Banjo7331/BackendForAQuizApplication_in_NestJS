@@ -9,6 +9,7 @@ import { Question } from "src/typeorm/entities/Question";
 import { QuestionType } from "src/enums/question-type.enum";
 import { QuestionNotFoundException } from "src/exceptions/QuestionNotFound.exception";
 import { QuizNotFoundException } from "src/exceptions/QuizNotFound.exception";
+import { CreateUserAttemptInput } from "./utils/CreateUserAnswerInput";
 
 @Injectable()
 export class QuizAttemptService {
@@ -21,56 +22,70 @@ export class QuizAttemptService {
 
   async submitAnswers(createQuizAttemptData: CreateQuizAttemptInput): Promise<QuizAttempt> {
     const { quizId, userAnswers } = createQuizAttemptData;
-    
-    const id = quizId;
-    const quiz = await this.quizRepository.findOne({ where: { id }, relations: ['questions'] });
+  
+    const quiz = await this.quizRepository.findOne({ where: { id: quizId }, relations: ['questions'] });
     if (!quiz) {
-        throw new QuizNotFoundException();
+      throw new QuizNotFoundException();
     }
-    const questions = quiz.questions;
-    console.log('questions:', questions);
-
+  
+    const obtainedPoints = this.calculateObtainedPoints(quiz.questions, userAnswers);
+    const createdQuizAttempt = await this.saveQuizAttemptAndUserAnswers(quiz, userAnswers);
+  
+    return {
+      ...createdQuizAttempt,
+      obtainedPoints,
+    };
+  }
+  
+  private calculateObtainedPoints(questions: Question[], userAnswers: CreateUserAttemptInput[]): number {
+    return userAnswers.reduce((points, userAnswer, index) => {
+      const question = questions[index];
+      if (!question) {
+        throw new QuestionNotFoundException(index);
+      }
+  
+      return points + (this.isUserAnswerCorrect(question, userAnswer) ? 1 : 0);
+    }, 0);
+  }
+  
+  private isUserAnswerCorrect(question: Question, userAnswer: CreateUserAttemptInput): boolean {
+    return (
+      question.correctAnswer.length === userAnswer.answer.length &&
+      question.correctAnswer.every((correctAnswer, index) =>
+        question.type === QuestionType.SORT
+          ? correctAnswer === userAnswer.answer[index]
+          : userAnswer.answer.includes(correctAnswer)
+      )
+    );
+  }
+  
+  private async saveQuizAttemptAndUserAnswers(quiz: Quiz, userAnswers: CreateUserAttemptInput[]): Promise<QuizAttempt> {
     const quizAttempt = new QuizAttempt();
     quizAttempt.quiz = quiz;
-    quizAttempt.maxPoints = questions.length;
-
-    quizAttempt.obtainedPoints = userAnswers.reduce((points, userAnswer, index) => {
-      const question = questions[index];
-      if (question) {
-        if (question.correctAnswer.length === userAnswer.answer.length) {
-          const allCorrect = question.type == QuestionType.SORT ? 
-          question.correctAnswer.every((correctAnswer, index) => correctAnswer === userAnswer.answer[index]) : 
-          question.correctAnswer.every((correctAnswer) =>
-            userAnswer.answer.includes(correctAnswer)
-          );
-    
-          if (allCorrect) {
-            return points + 1;
-          }
-        }
-      }else throw new QuestionNotFoundException(index);
-    
-      return points;
-    }, 0);
-
+    quizAttempt.maxPoints = quiz.questions.length;
+    quizAttempt.obtainedPoints = this.calculateObtainedPoints(quiz.questions, userAnswers);
+  
     const createdQuizAttempt = await this.quizAttemptRepository.save(quizAttempt);
-
+  
     const userAnswerEntities = userAnswers.map((userAnswerInput, index) => {
       const userAnswerEntity = new UserAnswer();
       userAnswerEntity.quizAttempt = createdQuizAttempt;
-      const question = questions[index];
-      if (question) {
-        userAnswerEntity.question = question;
-      }else throw new QuestionNotFoundException(index);
-
+  
+      const question = quiz.questions[index];
+      if (!question) {
+        throw new QuestionNotFoundException(index);
+      }
+  
+      userAnswerEntity.question = question;
       userAnswerEntity.answer = userAnswerInput.answer;
-      console.log('userAnswerEntity:', userAnswerEntity);
       return userAnswerEntity;
     });
-
+  
     await this.userAnswerRepository.save(userAnswerEntities);
     createdQuizAttempt.userAnswers = userAnswerEntities;
-    console.log('full:', createdQuizAttempt);
+  
     return createdQuizAttempt;
-  } 
+  }
+   
+   
 }

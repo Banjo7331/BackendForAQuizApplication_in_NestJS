@@ -23,6 +23,6 @@ export class QuizAttempt {
   obtainedPoints: number;
 
   @OneToMany(() => UserAnswer, (userAnswer) => userAnswer.quizAttempt, { eager: true })
-  @Field(() => [UserAnswer], { nullable: true }) 
-  userAnswers?: UserAnswer[];
+  @Field(() => [UserAnswer]) 
+  userAnswers: UserAnswer[];
 }

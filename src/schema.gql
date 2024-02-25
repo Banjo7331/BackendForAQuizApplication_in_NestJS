@@ -27,7 +27,7 @@ type QuizAttempt {
   id: Int!
   maxPoints: Int!
   obtainedPoints: Int!
-  userAnswers: [UserAnswer!]
+  userAnswers: [UserAnswer!]!
 }
 
 type Query {
