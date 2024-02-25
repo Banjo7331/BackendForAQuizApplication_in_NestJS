@@ -1,11 +1,11 @@
 import { Get, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Quiz } from "src/typeorm/entities/Quiz";
+import { Quiz } from "../typeorm/entities/Quiz";
 import { Repository } from "typeorm";
 import { CreateQuizInput } from "./utils/CreateQuizInput";
-import { Question } from "src/typeorm/entities/Question";
-import { QuizNotFoundException } from "src/exceptions/QuizNotFound.exception";
-import { QuestionNotFoundException } from "src/exceptions/QuestionNotFound.exception";
+import { Question } from "../typeorm/entities/Question";
+import { QuizNotFoundException } from "../exceptions/QuizNotFound.exception";
+import { QuestionNotFoundException } from "../exceptions/QuestionNotFound.exception";
 
 @Injectable()
 export class QuizService {
