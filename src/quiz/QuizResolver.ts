@@ -10,19 +10,16 @@ import { MultipleChoiceValidationPipe } from 'src/quiz/pipes/multiple-choice-que
 import { SortingQuestionValidationPipe } from './pipes/sorting-question.pipe';
 import { PlainTextAnswerValidationPipe } from './pipes/plain-field-text-question.pipe';
 import { QuizNotFoundException } from 'src/exceptions/QuizNotFound.exception';
-import { GlobalExceptionFilter } from 'src/filters/GeneralException.filter';
-import { QuizExceptionFilter } from 'src/filters/QuizCreatingException.filter';
 
 @Resolver(() => Quiz)
-@UseFilters(QuizExceptionFilter,GlobalExceptionFilter)
 export class QuizResolver {
     constructor(@Inject(QuizService) private quizService: QuizService,){}
     @Query((returns) => [Question], {nullable: true})
     getQuizQuestions(@Args('id',{type: ()=> Int}) id: number) {
-      const tableOfQuizQuestions = this.quizService.getQuizQuestions(id);
-      return tableOfQuizQuestions;
+      return this.quizService.getQuizQuestions(id);
     }
 
+    
     @Mutation((returns) => Quiz)
     @UsePipes(new ValidationPipe(),
     new QuestionTypeValidationPipe(),
