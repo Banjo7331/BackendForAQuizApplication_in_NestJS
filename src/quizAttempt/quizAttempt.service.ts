@@ -1,14 +1,14 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { QuizAttempt } from "src/typeorm/entities/QuizAttempt";
-import { UserAnswer } from "src/typeorm/entities/UserQuestionAnswerInput";
+import { QuizAttempt } from "../typeorm/entities/QuizAttempt";
+import { UserAnswer } from "../typeorm/entities/UserQuestionAnswerInput";
 import { Repository } from "typeorm";
 import { CreateQuizAttemptInput } from "./utils/CreateQuestionAttemptInput";
-import { Quiz } from "src/typeorm/entities/Quiz";
-import { Question } from "src/typeorm/entities/Question";
-import { QuestionType } from "src/enums/question-type.enum";
-import { QuestionNotFoundException } from "src/exceptions/QuestionNotFound.exception";
-import { QuizNotFoundException } from "src/exceptions/QuizNotFound.exception";
+import { Quiz } from "../typeorm/entities/Quiz";
+import { Question } from "../typeorm/entities/Question";
+import { QuestionType } from "../enums/question-type.enum";
+import { QuestionNotFoundException } from "../exceptions/QuestionNotFound.exception";
+import { QuizNotFoundException } from "../exceptions/QuizNotFound.exception";
 import { CreateUserAttemptInput } from "./utils/CreateUserAnswerInput";
 
 @Injectable()
@@ -17,7 +17,6 @@ export class QuizAttemptService {
     @InjectRepository(QuizAttempt) private quizAttemptRepository: Repository<QuizAttempt>,
     @InjectRepository(UserAnswer) private userAnswerRepository: Repository<UserAnswer>,
     @InjectRepository(Quiz) private quizRepository: Repository<Quiz>,
-    @InjectRepository(Question) private questionRepository: Repository<Question>,
   ) {}
 
   async submitAnswers(createQuizAttemptData: CreateQuizAttemptInput): Promise<QuizAttempt> {
@@ -82,6 +81,7 @@ export class QuizAttemptService {
     });
   
     await this.userAnswerRepository.save(userAnswerEntities);
+    console.log('createdQuizAttempt:', createdQuizAttempt);
     createdQuizAttempt.userAnswers = userAnswerEntities;
   
     return createdQuizAttempt;

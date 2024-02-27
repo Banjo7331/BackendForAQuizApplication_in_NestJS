@@ -1,6 +1,6 @@
 import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common';
 import { ArgumentMetadata } from '@nestjs/common/interfaces/features/pipe-transform.interface';
-import { QuestionType } from 'src/enums/question-type.enum';
+import { QuestionType } from '../../enums/question-type.enum';
 
 @Injectable()
 export class PlainTextAnswerValidationPipe implements PipeTransform<any> {
