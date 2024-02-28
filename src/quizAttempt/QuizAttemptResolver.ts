@@ -1,5 +1,5 @@
-import { Resolver, Query, Mutation, Args, Int,ResolveField, Parent } from '@nestjs/graphql';
-import { Inject, UseFilters, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Resolver,  Mutation, Args } from '@nestjs/graphql';
+import { Inject, UsePipes, ValidationPipe } from '@nestjs/common';
 import { QuizAttemptService } from './quizAttempt.service';
 import { CreateQuizAttemptInput } from './utils/CreateQuestionAttemptInput';
 import { QuizAttempt } from '../typeorm/entities/QuizAttempt';

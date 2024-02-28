@@ -17,8 +17,8 @@ export class SortingQuestionValidationPipe implements PipeTransform<any> {
 
             return (
               question.type === QuestionType.SORT &&
-              question.correctAnswer.length === question.possibleAnswers.length &&
-              question.correctAnswer.every((element, index) => element === question.possibleAnswers[index])
+              question.correctAnswer.length !== question.possibleAnswers.length &&
+              !question.correctAnswer.every(answer => question.possibleAnswers.includes(answer))
             );
           }
         );

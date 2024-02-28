@@ -1,5 +1,4 @@
 import { Field, InputType, Int } from "@nestjs/graphql";
-import { CreateQuizAttemptInput } from "./CreateQuestionAttemptInput";
 import { ArrayMaxSize, ArrayMinSize, IsArray, IsNotEmpty, IsString } from "class-validator";
 
 @InputType()

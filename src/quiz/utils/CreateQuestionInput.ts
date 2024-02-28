@@ -22,7 +22,7 @@ export class CreateQuestionInput {
   
   @IsOptional()
   @IsArray({ message: 'Possible answers must be an array.' })
-  @ArrayMinSize(1, { message: 'There must be at least one possible answer.' })
+  @ArrayMinSize(0, { message: 'There must be at least one possible answer.' })
   @ArrayMaxSize(5, { message: 'There cannot be more than five possible answers.' })
   @Field(() => [String], { nullable: true })
   possibleAnswers?: string[];

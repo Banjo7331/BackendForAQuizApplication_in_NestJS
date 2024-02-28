@@ -6,6 +6,7 @@ import { Quiz } from '../../typeorm/entities/Quiz';
 import { Question } from '../../typeorm/entities/Question';
 import { CreateQuizInput } from '../utils/CreateQuizInput';
 import { QuizNotFoundException } from '../../exceptions/QuizNotFound.exception';
+import { QuestionNotFoundException } from '../../exceptions/QuestionNotFound.exception';
 
 describe('QuizService', () => {
   let service: QuizService;
@@ -41,7 +42,7 @@ describe('QuizService', () => {
   });
 
   describe('createQuiz', () => {
-    it('should create a quiz with question', async () => {
+    it('should create an  empty quiz with question', async () => {
       const createQuizData: CreateQuizInput = {
         name: 'My Quiz',
         questions: [
@@ -62,7 +63,7 @@ describe('QuizService', () => {
       expect(questionRepositoryMock.create).toHaveBeenCalledTimes(createQuizData.questions.length);
       expect(questionRepositoryMock.save).toHaveBeenCalledWith(expect.arrayContaining(mockQuestions));
     });
-    it('should create a quiz with 100 questions', async () => {
+    it('should create an empty quiz with 100 questions', async () => {
       const numberOfQuestions = 100;
       const createQuizData: CreateQuizInput = {
         name: 'My Quiz',
@@ -74,21 +75,35 @@ describe('QuizService', () => {
           correctAnswer: ['A'],
         })),
       };
-  
       const mockQuiz = new Quiz();
+      mockQuiz.name = 'My fuiz';
       const mockQuestions = Array.from({ length: numberOfQuestions }, () => new Question());
   
       quizRepositoryMock.save = jest.fn().mockResolvedValue(mockQuiz);
-      questionRepositoryMock.create = jest.fn().mockReturnValueOnce(mockQuestions[0])
-                                                   .mockReturnValueOnce(mockQuestions[1])
-                                                   .mockReturnValueOnce(mockQuestions[2])
+      questionRepositoryMock.create = jest.fn().mockImplementation(() => mockQuestions.pop() || new Question());
   
       const result = await service.createQuiz(createQuizData);
-  
+      console.log('result:', result.name);
+      console.log('mockQuiz:', mockQuiz.name);
+      expect(result.name).toEqual(mockQuiz.name);
       expect(result).toEqual(mockQuiz);
       expect(quizRepositoryMock.save).toHaveBeenCalledWith(expect.any(Quiz));
       expect(questionRepositoryMock.create).toHaveBeenCalledTimes(numberOfQuestions);
       expect(questionRepositoryMock.save).toHaveBeenCalledWith(expect.arrayContaining(mockQuestions));
+    });
+    it('should throw QuestionNotFoundException when no questions are provided', async () => {
+      const createQuizData: CreateQuizInput = {
+        name: 'My Quiz',
+        questions: [], 
+      };
+    
+      quizRepositoryMock.save = jest.fn().mockImplementationOnce(() => {
+        throw new QuestionNotFoundException();
+      });
+    
+      await expect(async () => {
+        await service.createQuiz(createQuizData);
+      }).rejects.toThrow(QuestionNotFoundException);
     });
   });
   describe('getQuizQuestions', () => {

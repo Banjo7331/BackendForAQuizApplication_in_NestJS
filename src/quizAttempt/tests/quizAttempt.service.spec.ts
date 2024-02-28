@@ -2,7 +2,6 @@
 import { QuizAttemptService } from "../quizAttempt.service";
 import { Test, TestingModule } from "@nestjs/testing";
 import { CreateQuizAttemptInput } from "../utils/CreateQuestionAttemptInput";
-import { QuizAttemptResolver } from "../QuizAttemptResolver";
 import { Repository } from "typeorm";
 import { Question } from "../../typeorm/entities/Question";
 import { Quiz } from "../../typeorm/entities/Quiz";
@@ -11,7 +10,6 @@ import { UserAnswer } from "../../typeorm/entities/UserQuestionAnswerInput";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { QuizNotFoundException } from "../../exceptions/QuizNotFound.exception";
 import { QuestionNotFoundException } from "../../exceptions/QuestionNotFound.exception";
-import { QuizModule } from "../../quiz/quiz.module";
 import { CreateQuizInput } from "../../quiz/utils/CreateQuizInput";
 
 describe('QuizAttemptService', () => {
@@ -94,7 +92,7 @@ describe('QuizAttemptService', () => {
             maxPoints: 1,
             obtainedPoints: 0,
             userAnswers: [] as UserAnswer[], 
-          };
+        };
         
 
         const result = await service.submitAnswers(mockQuizAttempt);
@@ -106,7 +104,7 @@ describe('QuizAttemptService', () => {
         expect(quizRepositoryMock.findOne).toHaveBeenCalledWith({ where: { id: 1 }, relations: ['questions'] });
       });
   
-      it('should throw QuestionNotFoundException when question is not found', async () => {
+      it('should throw QuizNotFoundException when question is not found', async () => {
         const quizId = 1;
         const userAnswers = [{ answer: ['A'] }];
   
@@ -115,6 +113,27 @@ describe('QuizAttemptService', () => {
         await expect(async () => {
             await service.submitAnswers({ quizId, userAnswers });
         }).rejects.toThrow(QuizNotFoundException);
+      });
+
+      it('should throw QuestionNotFoundException when question is not found', async () => {
+        const quizId = 1;
+        const userAnswers = [{ answer: ['A'] }];
+        const questionIndex = 0; 
+      
+        quizAttemptRepositoryMock.findOne = jest.fn().mockResolvedValue(new QuizAttempt());
+      
+        const questionsMock = Array.from({ length: questionIndex + 1 }, (_, index) => {
+          if (index === questionIndex) {
+            return null;
+          }
+          return new Question();
+        });
+        
+        quizRepositoryMock.findOne = jest.fn().mockResolvedValue({ questions: questionsMock } as Quiz);
+      
+        await expect(async () => {
+          await service.submitAnswers({ quizId, userAnswers });
+        }).rejects.toThrow(QuestionNotFoundException);
       });
   
     });

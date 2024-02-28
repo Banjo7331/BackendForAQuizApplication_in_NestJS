@@ -81,7 +81,6 @@ export class QuizAttemptService {
     });
   
     await this.userAnswerRepository.save(userAnswerEntities);
-    console.log('createdQuizAttempt:', createdQuizAttempt);
     createdQuizAttempt.userAnswers = userAnswerEntities;
   
     return createdQuizAttempt;

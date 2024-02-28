@@ -1,6 +1,6 @@
 import { Field, InputType, Int } from "@nestjs/graphql";
 import { CreateUserAttemptInput } from "./CreateUserAnswerInput";
-import { ArrayMinSize, IsArray, IsInt, IsNumberString, Min, ValidateNested } from "class-validator";
+import { ArrayMinSize, IsArray, Min, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 
 @InputType()
