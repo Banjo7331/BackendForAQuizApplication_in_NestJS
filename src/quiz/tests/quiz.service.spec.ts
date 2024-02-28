@@ -83,8 +83,6 @@ describe('QuizService', () => {
       questionRepositoryMock.create = jest.fn().mockImplementation(() => mockQuestions.pop() || new Question());
   
       const result = await service.createQuiz(createQuizData);
-      console.log('result:', result.name);
-      console.log('mockQuiz:', mockQuiz.name);
       expect(result.name).toEqual(mockQuiz.name);
       expect(result).toEqual(mockQuiz);
       expect(quizRepositoryMock.save).toHaveBeenCalledWith(expect.any(Quiz));

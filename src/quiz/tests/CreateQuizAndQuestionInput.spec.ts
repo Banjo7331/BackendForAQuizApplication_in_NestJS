@@ -48,7 +48,6 @@ describe('QuizInputValidation', () => {
             questions: [2],
         });
         const errors = await validate(createQuizData);
-        console.log(errors[0])
         expect(errors).toHaveLength(1);
       });
       it('should  throw ValidationError as we passing not question to questions array', async () => {
@@ -58,7 +57,6 @@ describe('QuizInputValidation', () => {
           ],
         });
         const errors = await validate(createQuizData);
-        console.log(errors[0])
         expect(errors).toHaveLength(1);
       });
       it('should  throw ValidationError as correctAnswer array is empty', async () => {
@@ -68,7 +66,6 @@ describe('QuizInputValidation', () => {
           ],
         });
         const errors = await validate(createQuizData);
-        console.log(errors[0])
         expect(errors).toHaveLength(1);
       });
       it('should  throw ValidationError description has no length between 5-45', async () => {
@@ -78,7 +75,6 @@ describe('QuizInputValidation', () => {
           ],
         });
         const errors = await validate(createQuizData);
-        console.log(errors[0])
         expect(errors).toHaveLength(1);
       });
       it('should not throw ValidationError as possibleAnswers is empty and it can be becouse is nullable', async () => {
@@ -88,7 +84,6 @@ describe('QuizInputValidation', () => {
           ],
         });
         const errors = await validate(createQuizData);
-        console.log(errors[0])
         expect(errors).toHaveLength(0);
       });
       it('should  throw ValidationError as possibleAnswers has lenght more than 5 which is maximum in input validation for it', async () => {
@@ -98,7 +93,6 @@ describe('QuizInputValidation', () => {
           ],
         });
         const errors = await validate(createQuizData);
-        console.log(errors[0])
         expect(errors).toHaveLength(1);
       });
       it('should  throw ValidationError as correctAnswer has lenght more than 5 which is maximum in input validation for it', async () => {
@@ -108,7 +102,6 @@ describe('QuizInputValidation', () => {
           ],
         });
         const errors = await validate(createQuizData);
-        console.log(errors[0])
         expect(errors).toHaveLength(1);
       });
       it('should throw BadRequestException for invalid correctAnswer length in multiple-choice question where correctanswer cant be longer than possibleanswer', () => {
