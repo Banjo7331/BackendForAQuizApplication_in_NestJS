@@ -8,15 +8,17 @@ services:
     environment:
       - PORT=3000
       - NODE_ENV=development
+    depends_on:
+      - postgres_db
     volumes:
       - ./src:/usr/src/app/src
   postgres_db:
     image: postgres
     ports:
-      - 5432:5432
+      - ${DATABASE_PORT}:${DATABASE_PORT} 
     environment:
       - POSTGRES_ROOT_PASSWORD=root_password_123
-      - POSTGRES_USER=testuser
-      - POSTGRES_PASSWORD=testuser123
-      - POSTGRES_DB=post_new_structure
-      - POSTGRES_TCP_PORT=5432
+      - POSTGRES_DB=${DATABASE_NAME} 
+      - POSTGRES_USER=${DATABASE_USERNAME} 
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD} 
+      - POSTGRES_TCP_PORT=${DATABASE_PORT} 
