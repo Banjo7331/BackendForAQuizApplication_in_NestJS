@@ -48,6 +48,8 @@ The application is intended to facilitate the creation, management, and completi
 
     ```bash
     npm install
+
+    npm install --save-dev jest
     ```
 
 4.  Run the application locally
