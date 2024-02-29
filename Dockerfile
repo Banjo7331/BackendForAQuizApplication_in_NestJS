@@ -10,4 +10,7 @@ COPY . .
 
 EXPOSE 3000
 
+# Command to run tests
+# CMD ["npm", "test"]
+
 CMD ["npm", "run", "start:dev"]
