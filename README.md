@@ -56,12 +56,23 @@ The application is intended to facilitate the creation, management, and completi
     If so you need to change host for localhost in .env file:
     ![Example Image](picturesToDocumentation/localhost.png)
     DATABASE_HOST should be equal **localhost**:
+    Before starting api locally first need to make sure postgress database is working:
 
-        ```bash
-        npm run start:dev
-        ```
+    ```
+      sudo service postgresql start
+    ```
+    and as user described in .env file wants to use it:
 
-5.  Run the application with Docker
+    ```
+      psql -U testuser -d postgres
+    ```
+    and typing password described also in .env file for user. Than we can start app:
+
+    ```bash
+      npm run start:dev
+    ```
+
+5.  (**Recommended**) Run the application with Docker
     Need to have Docker deamon running. If using docker desktop and wsl start application and configure it with wsl to work:
     ```bash
     docker-compose up --build
@@ -73,7 +84,8 @@ The application is intended to facilitate the creation, management, and completi
     It ensures that database was created.
 
 ### Tests
-
+  Unit test were made using Jest framework
+  
 1. Run tests locally:
    ```bash
      npm test
